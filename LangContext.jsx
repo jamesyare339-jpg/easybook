@@ -1,0 +1,246 @@
+import React, { createContext, useContext, useState } from 'react';
+
+const translations = {
+  en: {
+    // Navigation
+    dashboard: 'Dashboard',
+    inventory: 'Inventory',
+    sales: 'Sales',
+    purchases: 'Purchases',
+    credit: 'Credit / Debts',
+    staff: 'Staff & HR',
+    expenses: 'Expenses',
+    reports: 'Reports',
+    stores: 'Stores',
+    cash: 'Cash',
+    users: 'Users',
+    settings: 'Settings',
+    logout: 'Logout',
+    customers: 'Customers',
+    suppliers: 'Suppliers',
+    categories: 'Categories',
+    stockHistory: 'Stock History',
+    profitLoss: 'Profit & Loss',
+    invoices: 'Invoices',
+    backup: 'Backup & Restore',
+
+    // Dashboard
+    todayIncome: "Today's Income",
+    todayExpenses: "Today's Expenses",
+    todayProfit: "Today's Profit",
+    totalStock: 'Total Stock',
+    customerDebt: 'Customer Debt',
+    supplierDebt: 'Supplier Debt',
+    staffCount: 'Staff Count',
+    lowStockAlerts: 'Low Stock Alerts',
+    recentSales: 'Recent Sales',
+    lowStockItems: 'Low Stock Items',
+
+    // Inventory
+    addProduct: 'Add Product',
+    editProduct: 'Edit Product',
+    deleteProduct: 'Delete Product',
+    productName: 'Product Name',
+    barcode: 'Barcode',
+    salePrice: 'Sale Price',
+    costPrice: 'Cost Price',
+    stock: 'Stock',
+    category: 'Category',
+    branch: 'Branch',
+    actions: 'Actions',
+    search: 'Search...',
+    allBranches: 'All Branches',
+    status: 'Status',
+    critical: 'Critical',
+    low: 'Low',
+    ok: 'OK',
+
+    // Sales
+    newSale: 'New Sale',
+    customerName: 'Customer Name',
+    product: 'Product',
+    quantity: 'Quantity',
+    price: 'Price',
+    total: 'Total',
+    paymentMethod: 'Payment Method',
+    cash: 'Cash',
+    evcPlus: 'EVC Plus',
+    sahal: 'Sahal',
+    premier: 'Premier Wallet',
+    bank: 'Bank',
+    completeSale: 'Complete Sale',
+    walkIn: 'Walk-in Customer',
+
+    // Staff
+    name: 'Name',
+    phone: 'Phone',
+    role: 'Role',
+    salary: 'Base Salary',
+    bonus: 'Bonus',
+    deductions: 'Deductions',
+    netSalary: 'Net Salary',
+    hireDate: 'Hire Date',
+    addStaff: 'Add Staff',
+
+    // Common
+    save: 'Save',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    delete: 'Delete',
+    view: 'View',
+    loading: 'Loading...',
+    noData: 'No data found',
+    success: 'Success',
+    error: 'Error',
+    amount: 'Amount',
+    date: 'Date',
+    notes: 'Notes',
+    allStores: 'All Stores',
+    generate: 'Generate',
+    transfer: 'Transfer',
+    paid: 'Paid',
+    unpaid: 'Unpaid',
+    partial: 'Partial',
+    active: 'Active',
+    inactive: 'Inactive',
+
+    // Reports
+    dailyReport: 'Daily Report',
+    monthlyReport: 'Monthly Report',
+    annualReport: 'Annual Report',
+    income: 'Income',
+    expenses_noun: 'Expenses',
+    profit: 'Profit',
+    transactions: 'Transactions',
+    topProducts: 'Top Products',
+  },
+  so: {
+    // Navigation
+    dashboard: 'Guud / Overview',
+    inventory: 'Alaabta',
+    sales: 'Iibka',
+    purchases: 'Iibsiga',
+    credit: 'Deymaha',
+    staff: 'Shaqaalaha',
+    expenses: 'Kharashaadka',
+    reports: 'Warbixinnada',
+    stores: 'Bakhaarada',
+    cash: 'Lacagta',
+    users: 'Isticmaalayaasha',
+    settings: 'Dejinta',
+    logout: 'Ka Bax',
+    customers: 'Macaamiisha',
+    suppliers: 'Saplaayaasha',
+    categories: 'Noocyada',
+    stockHistory: 'Taariikhda Stock-ga',
+    profitLoss: "Faa'iido & Khasaare",
+    invoices: 'Qaansheegyada',
+    backup: 'Backup & Soo Celin',
+
+    // Dashboard
+    todayIncome: 'Dakhliga Maanta',
+    todayExpenses: 'Kharashka Maanta',
+    todayProfit: "Faa'iidada Maanta",
+    totalStock: 'Alaabta Kaydka',
+    customerDebt: 'Deymaha Macaamiisha',
+    supplierDebt: 'Deymaha Saplaayaasha',
+    staffCount: 'Tirada Shaqaalaha',
+    lowStockAlerts: 'Digniinta Alaabta',
+    recentSales: 'Iibka Dambe',
+    lowStockItems: 'Alaabta Dhamaanaysa',
+
+    // Inventory
+    addProduct: 'Ku Dar Alaab',
+    editProduct: 'Tafatir Alaab',
+    deleteProduct: 'Tirtir Alaab',
+    productName: 'Magaca Alaabta',
+    barcode: 'Barcode',
+    salePrice: 'Qiimaha Iibka',
+    costPrice: 'Qiimaha Iibsiga',
+    stock: 'Tirada Stock',
+    category: 'Nooca',
+    branch: 'Xarunta',
+    actions: 'Hawlaha',
+    search: 'Raadso...',
+    allBranches: 'Dhammaan Xaruumaha',
+    status: 'Xaaladda',
+    critical: 'Aad U Yar',
+    low: 'Yar',
+    ok: 'Wanaagsan',
+
+    // Sales
+    newSale: 'Iib Cusub',
+    customerName: 'Magaca Macaamiilka',
+    product: 'Alaabta',
+    quantity: 'Tirada',
+    price: 'Qiimaha',
+    total: 'Wadarta',
+    paymentMethod: 'Habka Lacag Bixinta',
+    cash: 'Lacag Cad',
+    evcPlus: 'EVC Plus',
+    sahal: 'Sahal',
+    premier: 'Premier Wallet',
+    bank: 'Bank',
+    completeSale: 'Dhameystir Iibka',
+    walkIn: 'Macaamilka Imaaday',
+
+    // Staff
+    name: 'Magaca',
+    phone: 'Telefoonka',
+    role: 'Jagada',
+    salary: 'Mushaarka Aasaasiga',
+    bonus: 'Gunno',
+    deductions: 'Lacagta La Jaro',
+    netSalary: 'Mushaarka Ugu Dambeeya',
+    hireDate: 'Taariikhda Shaqada',
+    addStaff: 'Shaqaale Ku Dar',
+
+    // Common
+    save: 'Kaydi',
+    cancel: 'Jooji',
+    edit: 'Tafatir',
+    delete: 'Tirtir',
+    view: 'Arag',
+    loading: 'La Soo Rarayo...',
+    noData: 'Xog lama helin',
+    success: 'Guul',
+    error: 'Khalad',
+    amount: 'Lacagta',
+    date: 'Taariikhda',
+    notes: 'Faallada',
+    allStores: 'Dhammaan Bakhaarada',
+    generate: 'Samee',
+    transfer: 'Wareeji',
+    paid: 'La Bixiyay',
+    unpaid: 'Aan La Bixin',
+    partial: 'Qayb La Bixiyay',
+    active: 'Firfircoon',
+    inactive: 'Joojis',
+
+    // Reports
+    dailyReport: 'Warbixinta Maanta',
+    monthlyReport: 'Warbixinta Bisha',
+    annualReport: 'Warbixinta Sanadka',
+    income: 'Dakhliga',
+    expenses_noun: 'Kharashaadka',
+    profit: "Faa'iidada",
+    transactions: 'Macaamilada',
+    topProducts: 'Alaabta Ugu Badan',
+  },
+};
+
+const LangContext = createContext();
+
+export const LangProvider = ({ children }) => {
+  const [lang, setLang] = useState('so'); // Default: Somali
+  const t = (key) => translations[lang][key] || translations['en'][key] || key;
+  const toggleLang = () => setLang(l => l === 'en' ? 'so' : 'en');
+  return (
+    <LangContext.Provider value={{ lang, setLang, toggleLang, t }}>
+      {children}
+    </LangContext.Provider>
+  );
+};
+
+export const useLang = () => useContext(LangContext);
+export default LangContext;
