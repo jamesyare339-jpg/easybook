@@ -242,4 +242,32 @@ router.get('/backup/create', authMiddleware, requireRole('admin'), createBackup)
 router.post('/backup/restore', authMiddleware, requireRole('admin'), restoreBackup);
 router.get('/backup/history', authMiddleware, requireRole('admin'), getBackupHistory);
 
+// ─── ONE-TIME DATABASE SETUP (no shell access needed) ────────────
+// Visit /api/setup/init-database?key=YOUR_SECRET once after first deploy.
+router.get('/setup/init-database', async (req, res) => {
+  try {
+    if (req.query.key !== (process.env.SETUP_SECRET || 'easybook-setup-2026')) {
+      return res.status(403).json({ success: false, message: 'Invalid setup key' });
+    }
+    const { execSync } = require('child_process');
+    const output = execSync('node src/config/initDb.js', { encoding: 'utf8', cwd: process.cwd() });
+    res.json({ success: true, message: 'Database tables created ✓', output });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Init failed', error: err.message, output: err.stdout, stderr: err.stderr });
+  }
+});
+
+router.get('/setup/seed-database', async (req, res) => {
+  try {
+    if (req.query.key !== (process.env.SETUP_SECRET || 'easybook-setup-2026')) {
+      return res.status(403).json({ success: false, message: 'Invalid setup key' });
+    }
+    const { execSync } = require('child_process');
+    const output = execSync('node src/config/seedDb.js', { encoding: 'utf8', cwd: process.cwd() });
+    res.json({ success: true, message: 'Database seeded ✓ Admin login: admin@easybook.so / admin123', output });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Seed failed', error: err.message, output: err.stdout, stderr: err.stderr });
+  }
+});
+
 module.exports = router;
