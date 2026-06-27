@@ -19,7 +19,6 @@ export default function BarcodeScannerModal({ onDetected, onClose }) {
     }
     startCamera();
     return () => stopCamera();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startCamera = async () => {
@@ -117,4 +116,4 @@ export default function BarcodeScannerModal({ onDetected, onClose }) {
       </div>
     </div>
   );
-}
+                                                 }
